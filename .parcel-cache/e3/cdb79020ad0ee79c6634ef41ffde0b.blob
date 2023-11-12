@@ -426,12 +426,9 @@ const renderSpinner = function (parentEl) {
 };
 const showRecipe = async function () {
   try {
-    const id = window.location.hash.slice(1);
-    if (!id) return;
-
     // 1 Loading recipe
     renderSpinner(recipeContainer);
-    const res = await fetch(`https://forkify-api.herokuapp.com/api/v2/recipes/${id}`);
+    const res = await fetch("https://forkify-api.herokuapp.com/api/v2/recipes/5ed6604591c37cdc054bc886");
     const data = await res.json();
     if (!res.ok) throw new Error(`${data.message} (${res.status})`);
     let {
@@ -542,7 +539,8 @@ const showRecipe = async function () {
     console.log(err);
   }
 };
-['hashchange', 'load'].forEach(ev => window.addEventListener(ev, showRecipe));
+showRecipe();
+window.addEventListener;
 },{"core-js/modules/web.immediate.js":"140df4f8e97a45c53c66fead1f5a9e92","regenerator-runtime":"e155e0d3930b156f86c48e8d05522b16","url:../img/icons.svg":"ccd376e0aaf09928034a903142803166"}],"140df4f8e97a45c53c66fead1f5a9e92":[function(require,module,exports) {
 'use strict';
 // TODO: Remove this module from `core-js@4` since it's split to modules listed below
