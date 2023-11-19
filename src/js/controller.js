@@ -1,5 +1,7 @@
 import * as model from './model.js'; 
 import recipeView from '../js/views/recipeView.js';
+import searchView from '../js/views/searchView.js';
+import resultView from './views/resultsView.js';
 
 const { async } = require("regenerator-runtime");
 import 'core-js/stable';
@@ -7,11 +9,10 @@ import 'core-js/stable';
 import 'regenerator-runtime/runtime';
 // Polifiling asyn await  
 
-const recipeContainer = document.querySelector('.recipe');
-
-// https://forkify-api.herokuapp.com/v2
-
-///////////////////////////////////////
+// From Parcel
+if (module.hot) {
+  module.hot.accept();
+}
 
 const controlRecipes = async function(){
   try {
@@ -32,10 +33,32 @@ const controlRecipes = async function(){
   }
 };
 
+const controlSearchResults = async function(){
+  try {
+    // Render pizza
+    resultView.renderSpinner();
+
+    // Get search query
+    const query = searchView.getQuery();
+    if(!query) return;
+    
+    // Load search result
+    await model.loadSearchResults(query);
+    resultView.render(model.state.search.results);
+
+    // Render search results
+
+    
+  } catch (err) {
+    console.log(err);
+  }
+};
+
 
 // Publisher-subcriber pattern
 const init = function(){
   recipeView.addHandlerRender(controlRecipes);
+  searchView.addHandlerSearch(controlSearchResults);
 };
 
 init();
