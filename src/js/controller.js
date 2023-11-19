@@ -2,6 +2,7 @@ import * as model from './model.js';
 import recipeView from '../js/views/recipeView.js';
 import searchView from '../js/views/searchView.js';
 import resultView from './views/resultsView.js';
+import paginationView from './views/paginationView.js';
 
 const { async } = require("regenerator-runtime");
 import 'core-js/stable';
@@ -10,9 +11,9 @@ import 'regenerator-runtime/runtime';
 // Polifiling asyn await  
 
 // From Parcel
-if (module.hot) {
-  module.hot.accept();
-}
+// if (module.hot) {
+//   module.hot.accept();
+// }
 
 const controlRecipes = async function(){
   try {
@@ -44,14 +45,26 @@ const controlSearchResults = async function(){
     
     // Load search result
     await model.loadSearchResults(query);
-    resultView.render(model.state.search.results);
-
+  
     // Render search results
-
+    // resultView.render(model.state.search.results);
+    resultView.render(model.getSearchResultsPage(3));
+    
+    //4 Render initial pagination buttons
+    paginationView.render(model.state.search);
     
   } catch (err) {
     console.log(err);
   }
+};
+
+// Here i will render later results
+const controlPagination = function(gotoPage){
+     // 1 Render new result
+     resultView.render(model.getSearchResultsPage(gotoPage));
+    
+     //2 Render new pagination buttons
+     paginationView.render(model.state.search);
 };
 
 
@@ -59,6 +72,7 @@ const controlSearchResults = async function(){
 const init = function(){
   recipeView.addHandlerRender(controlRecipes);
   searchView.addHandlerSearch(controlSearchResults);
+  paginationView.addHandlerClick(controlPagination);
 };
 
 init();

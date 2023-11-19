@@ -85,6 +85,7 @@ class RecipeView  extends View{
   `;
    };
 
+   // Publisher-Subscriber
    addHandlerRender(handler){
     ['hashchange', 'load'].forEach(ev=> window.addEventListener(ev, handler));
    }
