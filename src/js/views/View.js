@@ -11,6 +11,31 @@ export default class View {
     this._clear();
     this._parentElement.insertAdjacentHTML('afterbegin', markup);
   }
+  update(data){
+    //Update just dom elements
+    this._data = data;
+    const newMarkup = this._generateMarkuo();
+    
+    // Convert DOM to new object in Meomory
+    const newDom = document.createRange().createContextualFragment(newMarkup);
+    const newElements = Array.from(newDom.querySelectorAll('*'));
+    const currentElements = Array.from(this._parentElement.querySelectorAll('*'));
+
+    newElements.forEach((newEl, index) =>{
+      const curEl = currentElements[index];
+      
+      //Update changed TEXT
+      if (!newEl.isEqualNode(curEl) && newEl.firstChild?.nodeValue.trim() !== '') {
+                                      // Take only text from element 
+        curEl.textContent = newEl.textContent;
+      }
+      
+      //Update changed atribbuted
+      if (!newEl.isEqualNode(curEl)) {
+        Array.from(newEl.attributes).forEach(attr => curEl.setAttribute(attr.name, attr.value));
+      }
+    });
+  }
 
   _clear() {
     this._parentElement.innerHTML = '';
