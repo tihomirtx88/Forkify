@@ -22,6 +22,9 @@ const controlRecipes = async function(){
 
     recipeView.renderSpinner();
 
+    //Update to results view to mark selected search results
+    resultView.update(model.getSearchResultsPage());
+
     // 1 Loading recipe
     await model.loadRecipe(id);
     const {recipe} = model.state;
@@ -58,7 +61,7 @@ const controlSearchResults = async function(){
   }
 };
 
-// Here i will render later results
+// Here i will render later results and pass to view 
 const controlPagination = function(gotoPage){
      // 1 Render new result
      resultView.render(model.getSearchResultsPage(gotoPage));
@@ -67,10 +70,20 @@ const controlPagination = function(gotoPage){
      paginationView.render(model.state.search);
 };
 
+const controlServings = function(newServings){
+  //Update recipe servings (in state)
+  model.updateServings(newServings);
+
+  // Updateing recipe view
+  // recipeView.render(model.state.recipe);
+  recipeView.update(model.state.recipe);
+};
+
 
 // Publisher-subcriber pattern
 const init = function(){
   recipeView.addHandlerRender(controlRecipes);
+  recipeView.addHandlerUpdateServings(controlServings);
   searchView.addHandlerSearch(controlSearchResults);
   paginationView.addHandlerClick(controlPagination);
 };
