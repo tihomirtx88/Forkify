@@ -2,6 +2,7 @@ import * as model from './model.js';
 import recipeView from '../js/views/recipeView.js';
 import searchView from '../js/views/searchView.js';
 import resultView from './views/resultsView.js';
+import bookmarksView from './views/bookmarksVies.js';
 import paginationView from './views/paginationView.js';
 
 const { async } = require("regenerator-runtime");
@@ -31,6 +32,9 @@ const controlRecipes = async function(){
 
     //  2 Render recipe
     recipeView.render(model.state.recipe);
+
+    //3 Update bookmarks view
+    bookmarksView.update(model.state.bookmarks);
   
   } catch (err) {
     recipeView.renderError();
@@ -79,11 +83,29 @@ const controlServings = function(newServings){
   recipeView.update(model.state.recipe);
 };
 
+const controlAddBookmark = function(){
+  // Add/Remove bookmark
+  if(!model.state.recipe.bookmarked) model.addBookmarks(model.state.recipe);
+  else model.removeBookmarks(model.state.recipe.id);
+ 
+  // Update bookmark
+  recipeView.update(model.state.recipe);
+
+  //Render bookmarks
+  bookmarksView.render(model.state.bookmarks);
+};
+
+const controlBookmarks = function(){
+  bookmarksView.render(model.state.bookmarks);
+};
+
 
 // Publisher-subcriber pattern
 const init = function(){
+  bookmarksView.addHandlerRender(controlBookmarks);
   recipeView.addHandlerRender(controlRecipes);
   recipeView.addHandlerUpdateServings(controlServings);
+  recipeView.addHandlerAddBookmark(controlAddBookmark);
   searchView.addHandlerSearch(controlSearchResults);
   paginationView.addHandlerClick(controlPagination);
 };
