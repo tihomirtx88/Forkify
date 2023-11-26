@@ -2,12 +2,16 @@ import icons from 'url:../../img/icons.svg';//Parse 2
 
 export default class View {
   _data;
-  render(data) {
+  render(data, render = true) {
     // If case there are not any recipes
     if(!data || (Array.isArray(data) && data.length === 0)) return this.renderError();
 
     this._data = data;
     const markup = this._generateMarkuo();
+
+    if(!render) return markup;
+    // Second paramerar are for previewView and guard to not mess render method
+
     this._clear();
     this._parentElement.insertAdjacentHTML('afterbegin', markup);
   }
@@ -32,7 +36,8 @@ export default class View {
       
       //Update changed atribbuted
       if (!newEl.isEqualNode(curEl)) {
-        Array.from(newEl.attributes).forEach(attr => curEl.setAttribute(attr.name, attr.value));
+        Array.from(newEl.attributes)
+         .forEach(attr => curEl.setAttribute(attr.name, attr.value));
       }
     });
   }
