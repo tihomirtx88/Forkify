@@ -1,6 +1,11 @@
-import { async } from 'regenerator-runtime';
-import { TIMEOUT_SEC } from './config.js';
+"use strict";
 
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.AJAX = void 0;
+var _regeneratorRuntime = require("regenerator-runtime");
+var _config = require("./config.js");
 const timeout = function (s) {
   return new Promise(function (response, reject) {
     setTimeout(function () {
@@ -8,28 +13,22 @@ const timeout = function (s) {
     }, s * 1000);
   });
 };
-
-export const AJAX = async function (url, uploadData = undefined) {
+const AJAX = async function (url, uploadData = undefined) {
   try {
-    const fetchPro = uploadData
-      ? fetch(url, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(uploadData),
-        })
-      : fetch(url);
-
-   
-      const res = await Promise.race([fetchPro, timeout(TIMEOUT_SEC)]);
-      const data = await res.json();
-  
-      if (!res.ok) throw new Error(`${data.message} (${res.status})`);
-      return data;
-    } catch (err) {
-      throw err;
-    }
+    const fetchPro = uploadData ? fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(uploadData)
+    }) : fetch(url);
+    const res = await Promise.race([fetchPro, timeout(_config.TIMEOUT_SEC)]);
+    const data = await res.json();
+    if (!res.ok) throw new Error(`${data.message} (${res.status})`);
+    return data;
+  } catch (err) {
+    throw err;
+  }
 };
 
 // export const getJSON = async function (url) {
@@ -63,3 +62,4 @@ export const AJAX = async function (url, uploadData = undefined) {
 //     throw err;
 //   }
 // };
+exports.AJAX = AJAX;
