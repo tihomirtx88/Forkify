@@ -34,6 +34,7 @@ const controlRecipes = async function(){
 
     //  2 Render recipe
     recipeView.render(model.state.recipe);
+    console.log(recipeView.render(model.state.recipe),'from recipe');
 
     //3 Update bookmarks view
     bookmarksView.update(model.state.bookmarks);
