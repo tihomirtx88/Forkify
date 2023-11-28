@@ -2,6 +2,16 @@ import icons from 'url:../../img/icons.svg';//Parse 2
 
 export default class View {
   _data;
+
+  /**
+   * Render recive object to the DOM
+   * @param {Object | Object[]} data The data to be rendered (e.g recipe)
+   * @param {boolean} [render=true] If false, create markup string instead of rendering to DOM
+   * @returns {undefined | string} A markup string is returned if render = false
+   * @this {object} View instanse
+   * @author Tihomir Zhelyazkov 
+   */
+
   render(data, render = true) {
     // If case there are not any recipes
     if(!data || (Array.isArray(data) && data.length === 0)) return this.renderError();
@@ -15,6 +25,14 @@ export default class View {
     this._clear();
     this._parentElement.insertAdjacentHTML('afterbegin', markup);
   }
+
+ /**
+  * Update recive object and replace only the diferent elements in DOM
+  * @param {object | object[]} data The data to be rendered (e.g recipe)
+  * @returns {undefined | string}  Returned new data witcha are allready compare with old one
+  * @this {object} Update instanse
+  */
+
   update(data){
     //Update just dom elements
     this._data = data;
